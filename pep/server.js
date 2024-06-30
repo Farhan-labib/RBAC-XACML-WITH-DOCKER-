@@ -14,7 +14,7 @@ app.post('/pep', async (req, res) => {
     try {
         // Send request to PDP for decision using service name
         const pdpResponse = await axios.post('http://pdp:8080/pdp', { user, resource });
-
+        console.log('Received decision from PDP:', pdpResponse.data);
         // Example: Check PDP decision
         const decision = pdpResponse.data.decision;
 
