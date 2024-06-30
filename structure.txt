@@ -1,0 +1,14 @@
+my-xacml-rbac/
+├── pdp/
+│   ├── Dockerfile
+│   └── server.js
+├── pep/
+│   ├── Dockerfile
+│   └── server.js
+├── pap/
+│   ├── Dockerfile
+│   └── server.js
+├── pip/
+│   ├── Dockerfile
+│   └── server.js
+└── docker-compose.yml
