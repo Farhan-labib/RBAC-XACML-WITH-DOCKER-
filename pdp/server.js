@@ -9,7 +9,7 @@ app.use(bodyParser.json());
 
 // Example endpoint for PDP
 app.post('/pdp', async (req, res) => {
-    const { user, resource } = req.body;
+    const { user, resource, action } = req.body;
 
     try {
         // Fetch policies from PAP
@@ -18,7 +18,7 @@ app.post('/pdp', async (req, res) => {
 
         // Example: Check if user role permits access to the resource based on fetched policies
         const decision = policies.some(policy =>
-            policy.role === user.role && policy.resource === resource && policy.decision === 'Permit'
+            policy.role === user.role && policy.resource === resource && policy.action===action  && policy.decision === 'Permit'
         ) ? 'Permit' : 'Deny';
 
         res.json({ decision });

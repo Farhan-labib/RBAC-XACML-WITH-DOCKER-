@@ -10,14 +10,14 @@ app.use(bodyParser.json());
 let policies = [
     {
         id: 1,
-        resource: '/api/data1',
+        resource: 'data1',
         action: 'read',
         role: 'employee1',
         decision: 'Permit'
     },
     {
         id: 2,
-        resource: '/api/data2',
+        resource: 'data2',
         action: 'write',
         role: 'employee2',
         decision: 'Permit'

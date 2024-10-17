@@ -1,21 +1,22 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-const axios = require('axios');
+const cors = require('cors');
+const axios = require('axios');  // Add this line to import axios
 
 const app = express();
-const port = 8080; // Port for PEP service
+const port = 8080;
 
 app.use(bodyParser.json());
+app.use(cors());
 
-// Example endpoint for PEP
 app.post('/pep', async (req, res) => {
     const { user, resource, action } = req.body;
 
     try {
-        // Send request to PDP for decision using service name
-        const pdpResponse = await axios.post('http://pdp:8080/pdp', { user, resource });
+        // Example request to the PDP for decision-making
+        const pdpResponse = await axios.post('http://pdp:8080/pdp', { user, resource, action });
         console.log('Received decision from PDP:', pdpResponse.data);
-        // Example: Check PDP decision
+
         const decision = pdpResponse.data.decision;
 
         if (decision === 'Permit') {

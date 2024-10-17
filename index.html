@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RBAC Policy Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            max-width: 600px;
+            margin: auto;
+        }
+        label, input {
+            display: block;
+            margin-bottom: 10px;
+        }
+        button {
+            padding: 10px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .result {
+            margin-top: 20px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+    <h2>Test Policy Decision</h2>
+    <form id="policyForm">
+        <label for="role">Role:</label>
+        <input type="text" id="role" name="role" required>
+
+        <label for="resource">Resource:</label>
+        <input type="text" id="resource" name="resource" required>
+
+        <label for="action">Action:</label>
+        <input type="text" id="action" name="action" required>
+
+        <button type="submit">Check Access</button>
+    </form>
+
+    <div class="result" id="result"></div>
+
+    <script>
+        const form = document.getElementById('policyForm');
+        form.addEventListener('submit', async (event) => {
+            event.preventDefault();
+            
+            const role = document.getElementById('role').value;
+            const resource = document.getElementById('resource').value;
+            const action = document.getElementById('action').value;  // Get action input
+    
+            const user = { role };  // Send role as the user object
+            const requestBody = { user, resource, action };  // Include action in the request body
+    
+            try {
+                const response = await fetch('http://localhost:8081/pep', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(requestBody)
+                });
+    
+                const data = await response.json();
+                const resultDiv = document.getElementById('result');
+    
+                if (data.status === 'Access granted') {
+                    resultDiv.textContent = 'Access granted (Permit)';
+                    resultDiv.style.color = 'green';
+                } else if (data.status === 'Access denied') {
+                    resultDiv.textContent = 'Access denied (Deny)';
+                    resultDiv.style.color = 'red';
+                } else {
+                    resultDiv.textContent = 'Unable to access XACML';
+                    resultDiv.style.color = 'orange';  // You can change the color if needed
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                document.getElementById('result').textContent = 'An error occurred. Please try again.';
+            }
+        });
+    </script>
+    
+
+</body>
+</html>
